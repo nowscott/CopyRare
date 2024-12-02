@@ -9,8 +9,12 @@ const CategoryList = ({ categories }) => {
         <div key={category} className="w-full bg-white p-4 rounded-lg shadow">
           <h2 className="text-lg font-semibold text-center mb-4">{category}</h2>
           <div className="flex flex-wrap gap-4 justify-center">
-            {items.map((item, index) => (
-              <TagButton key={index} content={item.content} />
+            {items.map((item) => (
+              <TagButton
+                key={item.id}  // 使用 item.id 作为唯一的 key
+                content={item.content}
+                remark={item.remark}
+              />
             ))}
           </div>
         </div>

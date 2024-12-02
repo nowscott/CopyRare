@@ -9,7 +9,7 @@ const SearchBox = ({ searchTerm, setSearchTerm }) => {
         placeholder="请输入关键词"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        className="w-full max-w-[400px] p-3 border rounded-lg shadow"
+        className="w-[92%] max-w-[400px] p-3 border rounded-lg shadow"
       />
     </div>
   );

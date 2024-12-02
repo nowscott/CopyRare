@@ -1,50 +1,18 @@
 // pages/index.js
-import { useState, useEffect } from "react";
-import SearchBox from "../components/SearchBox";
-import CategoryList from "../components/CategoryList";
+import MainPage from "../components/MainPage"; // 引入 MainPage 组件
+import { fetchNotionData } from "../lib/fetchNotionData";
 
-export default function Home() {
-  const [data, setData] = useState([]);
-  const [filteredData, setFilteredData] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
+export default function Home({ data }) {
+  return <MainPage data={data} />;
+}
 
-  useEffect(() => {
-    // 获取 Notion 数据
-    fetch("/api/notion")
-      .then((res) => res.json())
-      .then((data) => {
-        // 按字符编码升序排序
-        const sortedData = data.sort((a, b) => a.content.localeCompare(b.content));
-        setData(sortedData);
-      });
-  }, []);
+export async function getStaticProps() {
+  const data = await fetchNotionData();
 
-  useEffect(() => {
-    if (searchTerm) {
-      setFilteredData(
-        data.filter(
-          (item) =>
-            item.content.includes(searchTerm) ||
-            item.keywords.includes(searchTerm)
-        )
-      );
-    } else {
-      setFilteredData(data);
-    }
-  }, [searchTerm, data]);
-
-  // 按类别分组
-  const categories = filteredData.reduce((acc, item) => {
-    if (!acc[item.category]) acc[item.category] = [];
-    acc[item.category].push(item);
-    return acc;
-  }, {});
-
-  return (
-    <div className="min-h-screen p-4 bg-gray-50">
-      <h1 className="text-center text-3xl font-bold text-black mb-6">Copy Rare</h1>
-      <SearchBox searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-      <CategoryList categories={categories} />
-    </div>
-  );
+  return {
+    props: {
+      data,
+    },
+    revalidate: 1800,
+  };
 }
