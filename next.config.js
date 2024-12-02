@@ -1,4 +1,11 @@
-/** @type {import('next').NextConfig} */
-module.exports = {
-  reactStrictMode: true, // 启用 React 严格模式
-};
+if (process.env.NODE_ENV === "development") {
+
+  const { setupDevPlatform } = require("@cloudflare/next-on-pages/next-dev")
+  
+  setupDevPlatform()
+  
+  }
+  
+  const nextConfig = {}
+  
+  module.exports = nextConfig
